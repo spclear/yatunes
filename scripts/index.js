@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', () => {
       toggleActiveElement(tabButtons, index, 'active');
       toggleActiveElement(tabBlocks, index, 'active');
+      stopVideoOnClose();
     });
   });
 
@@ -30,4 +31,12 @@ function toggleActiveElement(list, index, activeClass = 'active') {
       ? item.classList.add(activeClass)
       : item.classList.remove(activeClass);
   });
+}
+
+function stopVideoOnClose() {
+  const videoBlock = document.querySelector('.player-block.video');
+  const video = videoBlock.querySelector('.video-player');
+  const isHidden = window.getComputedStyle(videoBlock).display === 'none';
+  
+  isHidden && video.pause();
 }
