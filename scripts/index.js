@@ -36,7 +36,10 @@ function toggleActiveElement(list, index, activeClass = 'active') {
 function stopVideoOnClose() {
   const videoBlock = document.querySelector('.player-block.video');
   const video = videoBlock.querySelector('.video-player');
+  const playButton = videoBlock.querySelector('.video-button__play');
   const isHidden = window.getComputedStyle(videoBlock).display === 'none';
   
+  playButton.classList.add('fa-play');
+  playButton.classList.remove('fa-pause');
   isHidden && video.pause();
 }
