@@ -88,6 +88,7 @@ function videoPlayer() {
   function createVolumeToggle() {
     let previousVolume = video.volume;
 
+    // volume value is 1 or 0 (1 for mute, 1 for max volume);
     return (volumeValue = 0) => {
       if ((isVolumeMax && volumeValue) || (isMuted && !volumeValue )) {
         video.volume = previousVolume;

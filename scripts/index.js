@@ -12,17 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleActiveElement(tabBlocks, 0, 'active');
   temp.style.display = 'none';
 
+  const radio = radioPlayer();
+  musicPlayer();
+  videoPlayer();
+
   tabButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
       toggleActiveElement(tabButtons, index, 'active');
       toggleActiveElement(tabBlocks, index, 'active');
       stopVideoOnClose();
+      stopRadioOnClose(radio);
     });
   });
-
-  musicPlayer();
-  videoPlayer();
-  radioPlayer();
 });
 
 function toggleActiveElement(list, index, activeClass = 'active') {
@@ -34,12 +35,30 @@ function toggleActiveElement(list, index, activeClass = 'active') {
 }
 
 function stopVideoOnClose() {
-  const videoBlock = document.querySelector('.player-block.video');
-  const video = videoBlock.querySelector('.video-player');
-  const playButton = videoBlock.querySelector('.video-button__play');
-  const isHidden = window.getComputedStyle(videoBlock).display === 'none';
-  
+  stopOnClose({
+    playerBlockSelector: '.player-block.video',
+    playButtonSelector: '.video-button__play',
+    player: document.querySelector('.video-player'),
+  });
+}
+
+function stopRadioOnClose(radio) {
+  stopOnClose({
+    playerBlockSelector: '.player-block.radio',
+    playButtonSelector: '.radio-stop',
+    player: radio,
+  });
+  document.querySelector('.player-block.radio').classList.remove('play');
+}
+
+function stopOnClose(props) {
+  const { playerBlockSelector, playButtonSelector, player } = props;
+
+  const playerBlock = document.querySelector(playerBlockSelector);
+  const playButton = playerBlock.querySelector(playButtonSelector);
+  const isHidden = window.getComputedStyle(playerBlock).display === 'none';
+
   playButton.classList.add('fa-play');
   playButton.classList.remove('fa-pause');
-  isHidden && video.pause();
+  isHidden && player.pause();
 }
