@@ -110,6 +110,8 @@ function videoPlayer() {
       playButton.classList.replace('fa-play', 'fa-pause');
     }
   }
+
+  return video;
 }
 
 export default videoPlayer;

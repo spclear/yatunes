@@ -12,19 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleActiveElement(tabBlocks, 0, 'active');
   temp.style.display = 'none';
 
+  const video = videoPlayer();
   const radio = radioPlayer();
   musicPlayer();
-  videoPlayer();
 
   tabButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
       toggleActiveElement(tabButtons, index, 'active');
       toggleActiveElement(tabBlocks, index, 'active');
-      stopVideoOnClose();
+      stopVideoOnClose(video);
       stopRadioOnClose(radio);
     });
   });
 });
+
+// ====================
+// only functions below
 
 function toggleActiveElement(list, index, activeClass = 'active') {
   list.forEach((item, i) => {
@@ -34,19 +37,19 @@ function toggleActiveElement(list, index, activeClass = 'active') {
   });
 }
 
-function stopVideoOnClose() {
+function stopVideoOnClose(player) {
   stopOnClose({
     playerBlockSelector: '.player-block.video',
     playButtonSelector: '.video-button__play',
-    player: document.querySelector('.video-player'),
+    player,
   });
 }
 
-function stopRadioOnClose(radio) {
+function stopRadioOnClose(player) {
   stopOnClose({
     playerBlockSelector: '.player-block.radio',
     playButtonSelector: '.radio-stop',
-    player: radio,
+    player,
   });
   document.querySelector('.player-block.radio').classList.remove('play');
 }
