@@ -5,17 +5,32 @@ function videoPlayer() {
   const playButton = document.querySelector('.video-button__play');
   const stopButton = document.querySelector('.video-button__stop');
   const videoProgress = document.querySelector('.video-progress');
+  const volumeControl = document.querySelector('.video-volume');
+  const volumeMute = document.querySelector('#video-mute');
+  const volumeMax = document.querySelector('#video-max-volume');
   const timePassed = document.querySelector('.video-time__passed');
   const timeTotal = document.querySelector('.video-time__total');
+  
+  let isMuted = false;
+  let isVolumeMax = false;
+
+  const toggleVolume = createVolumeToggle();
 
   video.addEventListener('click', togglePlay);
   video.addEventListener('timeupdate', updateTime);
   playButton.addEventListener('click', togglePlay);
   stopButton.addEventListener('click', stopVideo);
   videoProgress.addEventListener('input', changeVideoProgress);
+  volumeControl.addEventListener('input', changeVideoVolume);
+  volumeMute.addEventListener('click', toggleMute);
+  volumeMax.addEventListener('click', toggleMaxVolume);
+  
+  volumeInit(.35);
 
   // only functions below
 
+
+  // video progress functions
   function togglePlay() {
     video.paused ? video.play() : video.pause();
     toggleIcon();
@@ -46,6 +61,47 @@ function videoPlayer() {
     video.currentTime = value / 100 * video.duration;
   }
 
+  // video volume functions
+  function volumeInit(initialVolume) {
+    volumeControl.value = initialVolume;
+    video.volume = initialVolume;
+  }
+
+  function changeVideoVolume() {
+    video.volume = volumeControl.value;
+    isMuted = false;
+    isVolumeMax = false;
+  }
+
+  function toggleMute() {
+    toggleVolume(0);
+    isMuted = !isMuted;
+    isVolumeMax = false;
+  }
+
+  function toggleMaxVolume() {
+    toggleVolume(1);
+    isVolumeMax = !isVolumeMax;
+    isMuted = false;
+  }
+
+  function createVolumeToggle() {
+    let previousVolume = video.volume;
+
+    return (volumeValue = 0) => {
+      if ((isVolumeMax && volumeValue) || (isMuted && !volumeValue )) {
+        video.volume = previousVolume;
+        previousVolume = volumeValue;
+      } else {
+        previousVolume = video.volume;
+        video.volume = volumeValue;
+      }
+
+      volumeControl.value = video.volume;
+    }
+  }
+
+  // additional functions
   function toggleIcon() {
     if (video.paused) {
       playButton.classList.replace('fa-pause', 'fa-play');
