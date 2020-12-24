@@ -5,7 +5,8 @@ html{-webkit-box-sizing:border-box;box-sizing:border-box}*,*::before,*::after{-w
   cursor: pointer;
 }
 
-input[type="range"].video-volume {
+input[type="range"].video-volume,
+input[type="range"].audio-volume {
   width: 100px;
 }
 

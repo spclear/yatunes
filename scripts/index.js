@@ -8,23 +8,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const temp = document.querySelector('.temp');
 
   // initial state for buttons and players
-  toggleActiveElement(tabButtons, 0, 'active');
-  toggleActiveElement(tabBlocks, 0, 'active');
+  toggleActiveElement(tabButtons, 1, 'active');
+  toggleActiveElement(tabBlocks, 1, 'active');
   temp.style.display = 'none';
 
   const video = videoPlayer();
   const radio = radioPlayer();
-  musicPlayer();
+  const audio = musicPlayer();
 
   tabButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
       toggleActiveElement(tabButtons, index, 'active');
       toggleActiveElement(tabBlocks, index, 'active');
+      
+      stopMusicOnClose(audio);
       stopVideoOnClose(video);
       stopRadioOnClose(radio);
     });
   });
 });
+
 
 // ====================
 // only functions below
@@ -35,6 +38,15 @@ function toggleActiveElement(list, index, activeClass = 'active') {
       ? item.classList.add(activeClass)
       : item.classList.remove(activeClass);
   });
+}
+
+function stopMusicOnClose(player) {
+  stopOnClose({
+    playerBlockSelector: '.player-block.audio',
+    playButtonSelector: '.audio-button__play',
+    player,
+  });
+  document.querySelector('.player-block.audio').classList.remove('play');
 }
 
 function stopVideoOnClose(player) {

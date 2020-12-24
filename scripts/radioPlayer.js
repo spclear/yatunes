@@ -14,6 +14,8 @@ function radioPlayer() {
   radioNavigation.addEventListener('change', chooseStation);
   playButton.addEventListener('click', togglePlay);
 
+  
+  // ====================
   // only functions below
 
   function chooseStation(event) {
